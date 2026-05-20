@@ -6,9 +6,6 @@ import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 
-export const metadata = {
-  title: "Register | MediQueue",
-};
 
 export default function RegisterPage() {
   const [error, setError] = useState("");

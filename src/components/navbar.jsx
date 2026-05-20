@@ -28,9 +28,11 @@ export default function Navbar() {
         <div className="hidden md:flex gap-6 items-center">
           {links}
 
-          <button className="bg-cyan-500 px-4 py-2 rounded-lg">
-            Login
-          </button>
+          <Link href="/login">
+  <button className="bg-cyan-500 px-4 py-2 rounded-lg">
+    Login
+  </button>
+</Link>
         </div>
 
         <button
@@ -44,8 +46,12 @@ export default function Navbar() {
       {open && (
         <div className="flex flex-col gap-4 mt-4 md:hidden">
           {links}
+          <Link href="/login">
+  <button className="bg-cyan-500 px-4 py-2 rounded-lg">
+    Login
+  </button>
+</Link>
 
-          
         </div>
       )}
     </nav>
