@@ -2,6 +2,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import tutors from "@/data/tutors";
 import TutorCard from "@/components/TutorCard";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import StatsSection from "@/components/StatsSection";
 
 export default function Home() {
   return (
@@ -56,6 +58,9 @@ export default function Home() {
         </div>
 
       </section>
+
+        <WhyChooseUs />
+        <StatsSection />
 
       <Footer />
 

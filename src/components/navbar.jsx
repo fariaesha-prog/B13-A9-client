@@ -45,9 +45,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-4 mt-4 md:hidden">
           {links}
 
-          <button className="bg-cyan-500 px-4 py-2 rounded-lg">
-            Login
-          </button>
+          
         </div>
       )}
     </nav>
