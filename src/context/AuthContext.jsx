@@ -7,8 +7,9 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Check if user is already logged in from localStorage
+  // Check if user is already logged in from localStorage on mount only
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -19,7 +20,9 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("user");
       }
     }
+    // Mark as initialized after attempting to restore
     setLoading(false);
+    setIsInitialized(true);
   }, []);
 
   const login = (userData) => {
@@ -33,7 +36,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, loading, isInitialized }}>
       {children}
     </AuthContext.Provider>
   );

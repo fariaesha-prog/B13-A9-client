@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -42,9 +42,7 @@ export default function Navbar() {
           <Link href="/my-sessions" className={getLinkClass("/my-sessions")}>
             My Sessions
           </Link>
-          <Link href="/booked-sessions" className={getLinkClass("/booked-sessions")}>
-            Booked Sessions
-          </Link>
+         
         </>
       )}
     </>
@@ -95,7 +93,7 @@ export default function Navbar() {
                 <button
                   onClick={() => {
                     logout();
-                    window.location.href = "/";
+                    router.push("/");
                   }}
                   className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50"
                 >

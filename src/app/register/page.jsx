@@ -2,6 +2,7 @@
  
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { FaGoogle } from "react-icons/fa";
  
 export default function RegisterPage() {
   const { login } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -92,14 +94,14 @@ export default function RegisterPage() {
         photoURL: formData.photoURL || null,
       });
 
-      setSuccess("Account created successfully! Redirecting to login...");
+      setSuccess("Registration successful! Redirecting to home...");
       setFormData({ name: "", email: "", photoURL: "", password: "" });
       setPassword("");
       
-      // Redirect to home after 2 seconds
+      // Redirect to home using router instead of window.location
       setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
+        router.push("/");
+      }, 1000);
     } catch (err) {
       setError("Something went wrong. Please try again later.");
       console.error(err);

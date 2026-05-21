@@ -1,21 +1,11 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  const token = request.cookies.get("auth_token")?.value;
-  
-  if (!token && request.nextUrl.pathname.startsWith("/my-tutors")) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  if (!token && request.nextUrl.pathname.startsWith("/booked-sessions")) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  if (!token && request.nextUrl.pathname.startsWith("/add-tutor")) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // Auth is now handled by PrivateRoute component
+  // Middleware no longer redirects to prevent conflicts with client-side routing
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/my-tutors", "/my-tutors/:path*", "/booked-sessions", "/booked-sessions/:path*", "/add-tutor", "/add-tutor/:path*"]
+  matcher: []
 };

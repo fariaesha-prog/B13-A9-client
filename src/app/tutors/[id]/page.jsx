@@ -31,17 +31,7 @@ const icons = {
     "M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
   laptop:
     "M4 16V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10M2 20h20",
-  grid:
-    "M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 0h7v7h-7z",
-  star:
-    "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
   check: "M20 6 9 17l-5-5",
-  qr:
-    "M3 3h6v6H3zm0 12h6v6H3zm12-12h6v6h-6zM9 9h1v1H9zm5 0h1v1h-1zm2 2h1v1h-1zm-4 0h1v1h-1zm2 2h1v1h-1zm-4 4h1v1h-1zm4 0h1v1h-1zm2 2h1v1h-1zm-4 0h1v1h-1zm2-6h1v1h-1zm-2 2h1v1h-1zm2 0h1v1h-1z",
-  home: "M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z",
-  chevron: "M9 18l6-6-6-6",
-  users:
-    "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m22 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
 };
 
 // ─── Dummy Data ───────────────────────────────────────────────────────────────
@@ -60,7 +50,8 @@ const tutorData = {
     availableDays: "Sun – Thu",
     timeSlot: "5:00 PM – 8:00 PM",
     startDate: "1 Jun 2025",
-    institution: "Bangladesh University of Engineering and Technology",
+    institution:
+      "Bangladesh University of Engineering and Technology",
     location: "Mirpur, Dhaka",
     teachingMode: "Online",
     totalSlots: 20,
@@ -77,14 +68,46 @@ const userPrefill = {
 };
 
 // ─── Breadcrumb ───────────────────────────────────────────────────────────────
-function Breadcrumb({ tutor }) {
+function Breadcrumb() {
   return (
-    <nav className="flex items-center gap-2 px-5 py-4 bg-white border-b border-gray-200 text-sm text-gray-500">
-      <span>Home</span>
-      <Icon d={icons.chevron} size={14} />
-      <span>Tutors</span>
-      <Icon d={icons.chevron} size={14} />
-      <span className="text-gray-800 font-medium">{tutor.name}</span>
+    <nav className="flex items-center gap-1.5 px-5 py-2.5 bg-white border-b border-zinc-200 text-xs text-zinc-500">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-3.5 h-3.5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"
+        />
+      </svg>
+
+      <span className="hover:text-zinc-700 cursor-pointer transition-colors">
+        Home
+      </span>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-3 h-3"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 18l6-6-6-6"
+        />
+      </svg>
+
+      <span className="text-zinc-700 font-medium">
+        All Tutors
+      </span>
     </nav>
   );
 }
@@ -138,6 +161,7 @@ function TutorCard({ tutor }) {
           <h2 className="text-3xl font-bold text-emerald-600">
             ৳{tutor.pricePerHour}
           </h2>
+
           <p className="text-sm text-gray-400">per hour</p>
         </div>
       </div>
@@ -211,7 +235,8 @@ function SessionDetails({ session }) {
 // ─── Slot Availability ────────────────────────────────────────────────────────
 function SlotAvailability({ session }) {
   const remaining = session.totalSlots - session.filledSlots;
-  const percent = (session.filledSlots / session.totalSlots) * 100;
+  const percent =
+    (session.filledSlots / session.totalSlots) * 100;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
@@ -285,57 +310,13 @@ function BookingForm({ tutor, prefill }) {
         Fill your information below
       </p>
 
-      <div className="space-y-4">
-        <input
-          type="text"
-          defaultValue={prefill.name}
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-emerald-500"
-        />
-
-        <input
-          type="text"
-          defaultValue={prefill.phone}
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-emerald-500"
-        />
-
-        <input
-          type="email"
-          defaultValue={prefill.email}
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-emerald-500"
-        />
-
-        <input
-          type="text"
-          readOnly
-          value={prefill.tutorId}
-          className="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3"
-        />
-
-        <input
-          type="text"
-          readOnly
-          value={tutor.name}
-          className="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3"
-        />
-
-        <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-          <p className="text-sm text-emerald-600">
-            Session Token
-          </p>
-
-          <h3 className="font-mono text-emerald-700 mt-1">
-            {prefill.sessionToken}
-          </h3>
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full bg-gray-900 hover:bg-black text-white py-3 rounded-xl transition"
-        >
-          {loading ? "Confirming..." : "Confirm Booking"}
-        </button>
-      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="w-full bg-gray-900 hover:bg-black text-white py-3 rounded-xl transition"
+      >
+        {loading ? "Confirming..." : "Confirm Booking"}
+      </button>
     </div>
   );
 }
@@ -348,10 +329,9 @@ export default function TutorPage() {
   return (
     <>
       <Navbar />
+      <Breadcrumb />
 
       <main className="min-h-screen bg-gray-50">
-        <Breadcrumb tutor={tutor} />
-
         <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Left Side */}

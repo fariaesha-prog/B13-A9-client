@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import { FaGoogle } from "react-icons/fa";
  
 export default function LoginPage() {
   const { login } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,10 +72,10 @@ export default function LoginPage() {
       setSuccess("Login successful! Redirecting to home page...");
       setFormData({ email: "", password: "" });
 
-      // Redirect to home after 2 seconds
+      // Redirect to home using router instead of window.location
       setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
+        router.push("/");
+      }, 1000);
     } catch (err) {
       setError("Something went wrong. Please try again later.");
       console.error(err);

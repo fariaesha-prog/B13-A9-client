@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { useAuth } from "@/context/AuthContext";
+import PrivateRoute from "@/components/PrivateRoute";
 
 // ── Day pill ──────────────────────────────────────────────────────────────────
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -112,31 +111,6 @@ function SuccessToast({ name }) {
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function AddTutor() {
-  const router = useRouter();
-  const { user, isLoading } = useAuth();
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/login");
-    }
-  }, [user, isLoading, router]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <Navbar />
-        <section className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D9E75]"></div>
-        </section>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
   const [form, setForm] = useState({
     tutorName: "Rakib Sultani",
     subject: "Mathematics",
@@ -209,8 +183,9 @@ export default function AddTutor() {
     : "No days selected";
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-zinc-800">
-      <Navbar />
+    <PrivateRoute>
+      <div className="min-h-screen bg-[#f8fafc] text-zinc-800">
+        <Navbar />
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 px-5 py-2.5 bg-white border-b border-zinc-200 text-xs text-zinc-500">
@@ -451,6 +426,7 @@ export default function AddTutor() {
       )}
 
       <Footer />
-    </div>
+      </div>
+    </PrivateRoute>
   );
 }
