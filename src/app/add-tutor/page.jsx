@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { useAuth } from "@/context/AuthContext";
 
 // ── Day pill ──────────────────────────────────────────────────────────────────
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -110,6 +112,31 @@ function SuccessToast({ name }) {
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function AddTutor() {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        <Navbar />
+        <section className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D9E75]"></div>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
   const [form, setForm] = useState({
     tutorName: "Rakib Sultani",
     subject: "Mathematics",

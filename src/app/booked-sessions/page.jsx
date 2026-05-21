@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { useAuth } from "@/context/AuthContext";
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 const MOCK_SESSIONS = [
@@ -13,8 +15,7 @@ const MOCK_SESSIONS = [
     initials: "RS",
     color: "bg-emerald-600",
     subject: "Mathematics",
-    subjectColor:
-      "bg-emerald-50 text-emerald-700 border-emerald-200",
+    subjectColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
     studentEmail: "arif@example.com",
     sessionToken: "MQ-2025-RS-8814",
     bookedOn: "16 May 2025",
@@ -32,22 +33,81 @@ const MOCK_SESSIONS = [
     bookedOn: "15 May 2025",
     status: "Confirmed",
   },
-  {
-    id: "3",
-    tutorName: "Tamim Ansari",
-    initials: "TA",
-    color: "bg-orange-500",
-    subject: "Chemistry",
-    subjectColor:
-      "bg-orange-50 text-orange-700 border-orange-200",
-    studentEmail: "arif@example.com",
-    sessionToken: "MQ-2025-TA-5506",
-    bookedOn: "20 May 2025",
-    status: "Pending",
-  },
-  {
-    id: "4",
-    tutorName: "Shafiq Hossain",
+];
+
+export default function BookedSessionsPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        <Navbar />
+        <section className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D9E75]"></div>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Navbar />
+      
+      <section className="flex-1 px-4 py-16">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">My Booked Sessions</h1>
+          
+          {MOCK_SESSIONS.length > 0 ? (
+            <div className="grid gap-4">
+              {MOCK_SESSIONS.map((session) => (
+                <div key={session.id} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className={`${session.color} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg`}>
+                        {session.initials}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{session.tutorName}</h3>
+                        <p className="text-sm text-gray-500">{session.subject}</p>
+                        <p className="text-xs text-gray-400 mt-1">{session.sessionToken}</p>
+                      </div>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${session.status === "Confirmed" ? "bg-emerald-50 text-emerald-700" : "bg-yellow-50 text-yellow-700"}`}>
+                      {session.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-4">Booked on {session.bookedOn}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+              <p className="text-gray-600 mb-4">No booked sessions yet</p>
+              <Link href="/tutors" className="text-[#1D9E75] hover:text-[#0F6E56] font-medium">
+                Browse tutors →
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
     initials: "SH",
     color: "bg-cyan-600",
     subject: "ICT / CS",

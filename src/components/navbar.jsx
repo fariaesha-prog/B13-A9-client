@@ -3,13 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-// import { AuthContext } from "../context/AuthContext"; // wire up later
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  // const { user, logout } = useContext(AuthContext); // wire up later
-  const user = null; // placeholder until auth is ready
+  const { user, logout } = useAuth();
 
   const activeLinkClass = "text-[#1D9E75] font-medium text-sm";
   const inactiveLinkClass = "text-gray-500 hover:text-[#1D9E75] text-sm transition-colors";
@@ -42,6 +41,9 @@ export default function Navbar() {
           </Link>
           <Link href="/my-sessions" className={getLinkClass("/my-sessions")}>
             My Sessions
+          </Link>
+          <Link href="/booked-sessions" className={getLinkClass("/booked-sessions")}>
+            Booked Sessions
           </Link>
         </>
       )}
@@ -78,8 +80,8 @@ export default function Navbar() {
             <div className="relative group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={user.photoURL}
-                alt={user.displayName}
+                src={user.photoURL || "https://via.placeholder.com/32"}
+                alt={user.name || user.displayName || "User"}
                 className="w-8 h-8 rounded-full cursor-pointer object-cover border border-gray-200"
               />
               {/* Dropdown */}
@@ -91,7 +93,10 @@ export default function Navbar() {
                   Profile
                 </Link>
                 <button
-                  // onClick={logout}
+                  onClick={() => {
+                    logout();
+                    window.location.href = "/";
+                  }}
                   className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50"
                 >
                   Logout
