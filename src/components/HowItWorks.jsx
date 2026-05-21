@@ -56,7 +56,7 @@ export default function HowItWorks() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative">
 
           {/* Connector line — desktop only */}
-          <div className="hidden sm:block absolute top-8 left-[calc(16.67%+16px)] right-[calc(16.67%+16px)] h-px bg-gray-200 z-0" />
+          <div className="hidden sm:block absolute top-8 left-[calc(16.67%+16px)] right-[calc(16.67%+16px)] h-px bg-zinc-800 z-0" />
 
           {steps.map((s) => (
             <div

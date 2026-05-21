@@ -84,7 +84,7 @@ const subjects = [
     label: "More",
     bg: "bg-gray-100",
     text: "text-gray-400",
-    hover: "hover:bg-gray-200",
+    hover: "hover:bg-zinc-800",
     isMore: true,
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
