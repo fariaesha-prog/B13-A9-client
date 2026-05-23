@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MediQueue – Tutor Booking System
 
-## Getting Started
+MediQueue is a full-stack tutor booking web application where students can register, log in, browse tutors, and book learning sessions based on subject and availability.
 
-First, run the development server:
+---
+
+## 🌐 Live Website
+https://your-vercel-link.vercel.app
+
+---
+
+## 🚀 Features
+
+- User authentication (Register/Login with JWT)
+- Google login support
+- Browse available tutors
+- Book tutoring sessions with slot control
+- Auto slot decrease after booking
+- Cancel booked sessions
+- View "My Booked Sessions" in table format
+- Tutor details page with full information
+- Protected routes for logged-in users
+- Responsive UI for all devices
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:**
+- Next.js
+- React
+- Tailwind CSS
+- Axios
+
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT Authentication
+- bcryptjs
+
+---
+
+## 📦 Installation
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
