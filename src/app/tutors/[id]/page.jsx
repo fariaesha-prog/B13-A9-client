@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import api from "@/services/api";
 import toast from "react-hot-toast";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -45,12 +45,7 @@ export default function TutorDetailsPage() {
 
   useEffect(() => {
     if (!id) return;
-    axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  })
+    api.get(`/tutors/${id}`)
       .then((res) => {
         setTutor(res.data);
         setSessionToken(generateToken(res.data.tutorName));
@@ -72,23 +67,17 @@ export default function TutorDetailsPage() {
 
     setBooking(true);
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings`,
-        {
-          tutorId: tutor._id,
-          tutorName: tutor.tutorName,
-          studentName,
-          phone,
-          studentEmail: user.email,
-          sessionToken,
-          bookStatus: "Pending confirmation",
-        },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      await api.post("/bookings", {
+        tutorId: tutor._id,
+        tutorName: tutor.tutorName,
+        studentName,
+        phone,
+        studentEmail: user.email,
+        sessionToken,
+        bookStatus: "Pending confirmation",
+      });
       toast.success("Session booked successfully!");
-     const updated = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/tutors/${id}`, {
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-});
+      const updated = await api.get(`/tutors/${id}`);
       setTutor(updated.data);
     } catch (err) {
       toast.error(err.response?.data?.message || "Booking failed");
@@ -128,7 +117,6 @@ export default function TutorDetailsPage() {
     <>
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-
         <div className="flex items-center gap-2 text-xs text-gray-400 mb-6">
           <Link href="/" className="hover:text-gray-600">Home</Link>
           <span>›</span>
@@ -138,7 +126,6 @@ export default function TutorDetailsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-
           <div className="lg:col-span-3 flex flex-col gap-4">
             <div className="bg-white border border-gray-100 rounded-xl p-5">
               <div className="flex gap-4 items-start">
@@ -203,7 +190,6 @@ export default function TutorDetailsPage() {
               <p className="text-base font-medium text-gray-800 mb-0.5">Book a session</p>
               <p className="text-xs text-gray-400 mb-4">Fill in your details below</p>
               <div className="border-t border-gray-100 mb-4" />
-
               <form onSubmit={handleBook} className="flex flex-col gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-400 mb-1.5">Your name</label>
@@ -221,17 +207,14 @@ export default function TutorDetailsPage() {
                   <label className="block text-xs font-medium text-gray-400 mb-1.5">Tutor name <span className="text-[#1D9E75] font-normal">(auto-filled)</span></label>
                   <input value={tutor.tutorName} readOnly className={readOnlyClass} />
                 </div>
-
                 <div className="bg-[#E1F5EE] border border-[#5DCAA5] rounded-lg p-3">
                   <p className="text-xs font-medium text-[#085041]">Session token (auto-generated)</p>
                   <p className="text-sm text-[#0F6E56] font-mono mt-0.5">{sessionToken}</p>
                 </div>
-
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-400">Status:</span>
                   <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#FAEEDA] text-[#633806]">Pending confirmation</span>
                 </div>
-
                 <button
                   type="submit"
                   disabled={booking || isFullyBooked}
@@ -239,7 +222,6 @@ export default function TutorDetailsPage() {
                 >
                   {booking ? "Confirming…" : isFullyBooked ? "No slots available" : "Confirm booking"}
                 </button>
-
                 <p className="text-xs text-gray-400 text-center">Slots decrease immediately after booking.</p>
               </form>
             </div>
