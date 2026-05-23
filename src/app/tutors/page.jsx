@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useEffect, useState } from "react";
@@ -31,10 +32,32 @@ export default function TutorsPage() {
 
       <section className="px-6 py-20">
         <div className="max-w-7xl mx-auto">
+=======
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import tutors from "@/data/tutors";
+import TutorCard from "@/components/TutorCard";
+
+export const metadata = {
+  title: "Tutors | MediQueue",
+};
+
+export default function TutorsPage() {
+  return (
+    <div>
+
+      <Navbar />
+
+      <section className="px-6 py-20">
+
+        <div className="max-w-7xl mx-auto">
+
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
           <h1 className="text-5xl font-bold text-center mb-14">
             All Tutors
           </h1>
 
+<<<<<<< HEAD
           {loading ? (
             <p className="text-center">Loading...</p>
           ) : (
@@ -48,6 +71,25 @@ export default function TutorsPage() {
       </section>
 
       <Footer />
+=======
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {tutors.map((tutor) => (
+              <TutorCard
+                key={tutor.id}
+                tutor={tutor}
+              />
+            ))}
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <Footer />
+
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
     </div>
   );
 }

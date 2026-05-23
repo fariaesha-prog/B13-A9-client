@@ -4,13 +4,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TutorCard from "./TutorCard";
 import TutorCardSkeleton from "./TutorCardSkeleton";
+<<<<<<< HEAD
 import api from "@/services/api";
+=======
+
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 export default function AvailableTutors() {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
+<<<<<<< HEAD
 useEffect(() => {
   api.get("/tutors?limit=6")
     .then((res) => {
@@ -23,6 +28,23 @@ useEffect(() => {
       setLoading(false);
     });
 }, []);
+=======
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/tutors?limit=6`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch tutors");
+        return res.json();
+      })
+      .then((data) => {
+        setTutors(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">

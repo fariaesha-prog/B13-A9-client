@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import { useEffect, useState, useContext } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -127,10 +128,309 @@ export default function TutorDetailsPage() {
         <div className="lg:col-span-2">
           <div className="h-96 bg-gray-100 rounded-xl animate-pulse" />
         </div>
+=======
+import { useState } from "react";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+const Icon = ({ d, size = 16 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.75}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d={d} />
+  </svg>
+);
+
+const icons = {
+  calendar:
+    "M8 2v3m8-3v3M3 9h18M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
+  clock:
+    "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 5v5l3 3",
+  building: "M3 21h18M9 21V7l6-4v18M3 21V11l6-4",
+  pin:
+    "M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+  laptop:
+    "M4 16V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10M2 20h20",
+  check: "M20 6 9 17l-5-5",
+};
+
+// ─── Dummy Data ───────────────────────────────────────────────────────────────
+const tutorData = {
+  name: "Rakib Sultani",
+  initials: "RS",
+  status: "Online",
+  subject: "Mathematics",
+  university: "BUET",
+  location: "Dhaka, Bangladesh",
+  rating: 4.9,
+  experience: 5,
+  pricePerHour: 500,
+  slotsLeft: 8,
+  session: {
+    availableDays: "Sun – Thu",
+    timeSlot: "5:00 PM – 8:00 PM",
+    startDate: "1 Jun 2025",
+    institution:
+      "Bangladesh University of Engineering and Technology",
+    location: "Mirpur, Dhaka",
+    teachingMode: "Online",
+    totalSlots: 20,
+    filledSlots: 12,
+  },
+};
+
+const userPrefill = {
+  name: "Arif Rahman",
+  phone: "01712345678",
+  email: "arif@example.com",
+  tutorId: "#TUT-00423",
+  sessionToken: "MQ-2025-RS-8814",
+};
+
+// ─── Breadcrumb ───────────────────────────────────────────────────────────────
+function Breadcrumb() {
+  return (
+    <nav className="flex items-center gap-1.5 px-5 py-2.5 bg-white border-b border-zinc-200 text-xs text-zinc-500">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-3.5 h-3.5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"
+        />
+      </svg>
+
+      <span className="hover:text-zinc-700 cursor-pointer transition-colors">
+        Home
+      </span>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-3 h-3"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 18l6-6-6-6"
+        />
+      </svg>
+
+      <span className="text-zinc-700 font-medium">
+        All Tutors
+      </span>
+    </nav>
+  );
+}
+
+// ─── Tutor Card ───────────────────────────────────────────────────────────────
+function TutorCard({ tutor }) {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+      <div className="flex justify-between gap-4">
+        <div className="flex gap-4">
+          <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            {tutor.initials}
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-xl font-bold text-gray-900">
+                {tutor.name}
+              </h1>
+
+              <span className="px-2 py-1 rounded-full text-xs bg-emerald-100 text-emerald-700">
+                {tutor.status}
+              </span>
+            </div>
+
+            <p className="mt-2 text-sm text-gray-600">
+              {tutor.subject}
+            </p>
+
+            <p className="text-sm text-gray-500">
+              {tutor.university} • {tutor.location}
+            </p>
+
+            <div className="flex gap-4 mt-2 text-sm">
+              <span className="text-amber-500">
+                ⭐ {tutor.rating}
+              </span>
+
+              <span className="text-gray-500">
+                {tutor.experience} years exp
+              </span>
+            </div>
+
+            <p className="mt-2 text-emerald-600 text-sm font-medium">
+              {tutor.slotsLeft} slots left
+            </p>
+          </div>
+        </div>
+
+        <div className="text-right">
+          <h2 className="text-3xl font-bold text-emerald-600">
+            ৳{tutor.pricePerHour}
+          </h2>
+
+          <p className="text-sm text-gray-400">per hour</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Detail Row ───────────────────────────────────────────────────────────────
+function DetailRow({ iconPath, label, value }) {
+  return (
+    <div className="flex justify-between border-b border-gray-100 py-3">
+      <div className="flex items-center gap-2 text-gray-500">
+        <Icon d={iconPath} size={15} />
+        <span>{label}</span>
+      </div>
+
+      <span className="text-gray-800 font-medium">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+// ─── Session Details ──────────────────────────────────────────────────────────
+function SessionDetails({ session }) {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        Session Details
+      </h2>
+
+      <DetailRow
+        iconPath={icons.calendar}
+        label="Available Days"
+        value={session.availableDays}
+      />
+
+      <DetailRow
+        iconPath={icons.clock}
+        label="Time Slot"
+        value={session.timeSlot}
+      />
+
+      <DetailRow
+        iconPath={icons.calendar}
+        label="Start Date"
+        value={session.startDate}
+      />
+
+      <DetailRow
+        iconPath={icons.building}
+        label="Institution"
+        value={session.institution}
+      />
+
+      <DetailRow
+        iconPath={icons.pin}
+        label="Location"
+        value={session.location}
+      />
+
+      <DetailRow
+        iconPath={icons.laptop}
+        label="Teaching Mode"
+        value={session.teachingMode}
+      />
+    </div>
+  );
+}
+
+// ─── Slot Availability ────────────────────────────────────────────────────────
+function SlotAvailability({ session }) {
+  const remaining = session.totalSlots - session.filledSlots;
+  const percent =
+    (session.filledSlots / session.totalSlots) * 100;
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+      <div className="flex justify-between mb-3">
+        <span className="text-gray-600">Slot Availability</span>
+
+        <span className="font-semibold text-emerald-600">
+          {remaining}/{session.totalSlots}
+        </span>
+      </div>
+
+      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-emerald-500"
+          style={{ width: `${percent}%` }}
+        />
+      </div>
+
+      <p className="mt-3 text-sm text-gray-500">
+        {session.filledSlots} seats already filled.
+      </p>
+    </div>
+  );
+}
+
+// ─── Booking Form ─────────────────────────────────────────────────────────────
+function BookingForm({ tutor, prefill }) {
+  const [loading, setLoading] = useState(false);
+  const [booked, setBooked] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1200)
+    );
+
+    setLoading(false);
+    setBooked(true);
+  };
+
+  if (booked) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-sm">
+        <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Icon d={icons.check} size={24} />
+        </div>
+
+        <h2 className="text-xl font-bold text-gray-900">
+          Booking Confirmed!
+        </h2>
+
+        <p className="text-gray-500 mt-2">
+          Your session has been booked successfully.
+        </p>
+
+        <p className="mt-4 text-emerald-600 font-mono">
+          {prefill.sessionToken}
+        </p>
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
       </div>
     );
   }
 
+<<<<<<< HEAD
   if (!tutor) return null;
 
   const subjectClass  = subjectColors[tutor.subject] || "bg-gray-100 text-gray-600";
@@ -390,4 +690,58 @@ export default function TutorDetailsPage() {
       </div>
     </div>
   );
+=======
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+      <h2 className="text-xl font-semibold text-gray-900">
+        Book a Session
+      </h2>
+
+      <p className="text-sm text-gray-500 mb-5">
+        Fill your information below
+      </p>
+
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="w-full bg-gray-900 hover:bg-black text-white py-3 rounded-xl transition"
+      >
+        {loading ? "Confirming..." : "Confirm Booking"}
+      </button>
+    </div>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
+export default function TutorPage() {
+  const tutor = tutorData;
+  const prefill = userPrefill;
+
+  return (
+    <>
+      <Navbar />
+      <Breadcrumb />
+
+      <main className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          {/* Left Side */}
+          <div className="space-y-5">
+            <TutorCard tutor={tutor} />
+            <SessionDetails session={tutor.session} />
+            <SlotAvailability session={tutor.session} />
+          </div>
+
+          {/* Right Side */}
+          <div>
+            <BookingForm tutor={tutor} prefill={prefill} />
+          </div>
+
+        </div>
+      </main>
+
+      <Footer />
+    </>
+  );
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 }

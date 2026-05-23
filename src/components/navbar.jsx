@@ -9,8 +9,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
+<<<<<<< HEAD
   const router = useRouter();
 
+=======
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 
   const activeLinkClass = "text-[#1D9E75] font-medium text-sm";
   const inactiveLinkClass = "text-gray-500 hover:text-[#1D9E75] text-sm transition-colors";
@@ -79,6 +82,7 @@ export default function Navbar() {
             /* Logged in: avatar + dropdown */
             <div className="relative group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
+<<<<<<< HEAD
            {user.photoURL ? (
   <img
     src={user.photoURL}
@@ -90,6 +94,13 @@ export default function Navbar() {
     {user.name?.charAt(0)?.toUpperCase() || "U"}
   </div>
 )}
+=======
+              <img
+                src={user.photoURL || "https://via.placeholder.com/32"}
+                alt={user.name || user.displayName || "User"}
+                className="w-8 h-8 rounded-full cursor-pointer object-cover border border-gray-200"
+              />
+>>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
               {/* Dropdown */}
               <div className="absolute right-0 top-10 w-44 bg-white border border-gray-100 rounded-xl shadow-sm py-1 hidden group-hover:block z-50">
                 <Link
