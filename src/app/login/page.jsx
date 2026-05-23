@@ -1,8 +1,5 @@
 "use client";
-<<<<<<< HEAD
 
-=======
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -10,175 +7,52 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
-<<<<<<< HEAD
 import api from "@/services/api";
 
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
-
-=======
- 
-export default function LoginPage() {
-  const { login } = useAuth();
-  const router = useRouter();
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-<<<<<<< HEAD
-
-=======
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-<<<<<<< HEAD
-
-=======
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-<<<<<<< HEAD
-
-=======
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-
     setError("");
     setSuccess("");
 
-    if (!formData.email.trim()) {
-      return setError("Email is required");
-    }
-
-    if (!formData.email.includes("@")) {
-      return setError("Please enter a valid email");
-    }
-
-=======
-    setError("");
-    setSuccess("");
-
-    // Validate fields
-    if (!formData.email.trim()) {
-      return setError("Email is required");
-    }
-    if (!formData.email.includes("@")) {
-      return setError("Please enter a valid email");
-    }
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
-    if (!formData.password) {
-      return setError("Password is required");
-    }
+    if (!formData.email.trim()) return setError("Email is required");
+    if (!formData.email.includes("@")) return setError("Please enter a valid email");
+    if (!formData.password) return setError("Password is required");
 
     try {
       setLoading(true);
+      const response = await api.post("/auth/login", formData);
+      const token = response.data?.token;
 
-<<<<<<< HEAD
-  const response = await api.post("/auth/login", formData);
+      if (!token) throw new Error("Token missing from backend response");
 
-console.log("LOGIN RESPONSE:", response.data); // DEBUG
-
-const token = response.data?.token;
-
-if (!token) {
-  throw new Error("Token missing from backend response");
-}
-
-// ✅ SAVE TOKEN
-localStorage.setItem("token", token);
-localStorage.setItem("user", JSON.stringify(response.data.user));
-
-login(response.data.user);
-
-      const data = response.data;
-
-    if (!data.token) {
-  throw new Error("No token from backend");
-}
-
-localStorage.setItem("token", data.token);
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
-
-      login(data.user);
-
-      setSuccess(
-        "Login successful! Redirecting..."
-      );
-
-      setFormData({
-        email: "",
-        password: "",
-      });
-
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
-
-    } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        "Login failed"
-      );
-
-      console.error(err);
-
-=======
-      // Send login request to backend API
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Login failed. Please try again.");
-        return;
-      }
-
-      // Save user to auth context
-      login({
-        email: formData.email,
-        name: data.user?.name || formData.email.split("@")[0],
-        photoURL: data.user?.photoURL || null,
-      });
-
-      setSuccess("Login successful! Redirecting to home page...");
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      login(response.data.user);
+      setSuccess("Login successful! Redirecting...");
       setFormData({ email: "", password: "" });
 
-      // Redirect to home using router instead of window.location
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+      setTimeout(() => router.push("/"), 1000);
     } catch (err) {
-      setError("Something went wrong. Please try again later.");
+      setError(err.response?.data?.message || "Login failed");
       console.error(err);
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
     } finally {
       setLoading(false);
     }
   };
-<<<<<<< HEAD
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -187,42 +61,6 @@ localStorage.setItem("token", data.token);
       <section className="flex-1 flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-sm bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
 
-          <div className="flex justify-center mb-5">
-            <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 14l9-5-9-5-9 5 9 5zm0 0v6m0-6l6.16-3.422A12.083 12.083 0 0112 21c-3.314 0-6.315-1.343-8.485-3.516"
-                />
-              </svg>
-            </div>
-          </div>
-
-          <h1 className="text-2xl font-bold text-gray-900 text-center">
-            Welcome back
-          </h1>
-
-          <p className="text-sm text-gray-400 text-center mt-1 mb-6">
-            Log in to your MediQueue account
-          </p>
-
-=======
-  return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar />
- 
-      <section className="flex-1 flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-sm bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
- 
-          {/* Logo icon */}
           <div className="flex justify-center mb-5">
             <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -230,48 +68,24 @@ localStorage.setItem("token", data.token);
               </svg>
             </div>
           </div>
- 
+
           <h1 className="text-2xl font-bold text-gray-900 text-center">Welcome back</h1>
           <p className="text-sm text-gray-400 text-center mt-1 mb-6">Log in to your MediQueue account</p>
- 
-          {/* Google button */}
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
-          <button
-            type="button"
-            className="w-full flex items-center justify-center gap-2.5 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium text-sm py-2.5 rounded-lg transition-colors"
-          >
+
+          <button type="button" className="w-full flex items-center justify-center gap-2.5 border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium text-sm py-2.5 rounded-lg transition-colors">
             <FaGoogle className="text-[#4285F4]" />
             Continue with Google
           </button>
-<<<<<<< HEAD
 
-=======
- 
-          {/* Divider */}
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-gray-100" />
             <span className="text-xs text-gray-400">or</span>
             <div className="flex-1 h-px bg-gray-100" />
           </div>
-<<<<<<< HEAD
 
-          <form
-            onSubmit={handleLogin}
-            className="space-y-4"
-          >
-
-=======
- 
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Email */}
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                Email address
-              </label>
-<<<<<<< HEAD
-
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Email address</label>
               <input
                 type="email"
                 name="email"
@@ -283,10 +97,7 @@ localStorage.setItem("token", data.token);
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                Password
-              </label>
-
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Password</label>
               <input
                 type="password"
                 name="password"
@@ -298,64 +109,11 @@ localStorage.setItem("token", data.token);
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-600">
-=======
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="arif@example.com"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-50 transition-all pr-9"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </span>
-              </div>
-            </div>
- 
-            {/* Password */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-medium text-gray-600">Password</label>
-                <button type="button" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium">
-                  Forgot password?
-                </button>
-              </div>
-              <div className="relative">
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-50 transition-all pr-9"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </span>
-              </div>
-            </div>
-
-            {/* Error message */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-3.5 py-2.5 text-sm text-red-600">
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
-                {error}
-              </div>
+              <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-600">{error}</div>
             )}
 
-<<<<<<< HEAD
             {success && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-sm text-emerald-600">
-                {success}
-              </div>
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-sm text-emerald-600">{success}</div>
             )}
 
             <button
@@ -363,95 +121,17 @@ localStorage.setItem("token", data.token);
               disabled={loading}
               className="w-full bg-gray-900 hover:bg-gray-700 disabled:bg-gray-400 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors"
             >
-              {loading
-                ? "Logging in..."
-                : "Log in"}
+              {loading ? "Logging in..." : "Log in"}
             </button>
           </form>
 
           <p className="text-center text-xs text-gray-400 mt-5">
             Don&apos;t have an account?{" "}
-            <Link
-              href="/register"
-              className="text-emerald-600 font-medium hover:text-emerald-700"
-            >
-              Register
-            </Link>
+            <Link href="/register" className="text-emerald-600 font-medium hover:text-emerald-700">Register</Link>
           </p>
-
         </div>
       </section>
 
-=======
-            {/* Success message */}
-            {success && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3.5 py-2.5 text-sm text-emerald-600">
-                {success}
-              </div>
-            )}
- 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-700 disabled:bg-gray-400 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors mt-1"
-            >
-              {loading ? (
-                <>
-                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Logging in...
-                </>
-              ) : (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                  </svg>
-                  Log in
-                </>
-              )}
-            </button>
-          </form>
- 
-          <p className="text-center text-xs text-gray-400 mt-5">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-emerald-600 font-medium hover:text-emerald-700">
-              Register
-            </Link>
-          </p>
- 
-          {/* Success state example — conditionally render in real app */}
-          {/* 
-          <div className="mt-4 flex items-start gap-2.5 bg-emerald-50 border border-emerald-200 rounded-lg px-3.5 py-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <p className="text-sm font-semibold text-emerald-700">Logged in successfully!</p>
-              <p className="text-xs text-emerald-600">Redirecting you to the home page…</p>
-            </div>
-          </div>
-          */}
- 
-          {/* Error state example — conditionally render in real app */}
-          {/*
-          <div className="mt-4 flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-lg px-3.5 py-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-red-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <p className="text-sm font-semibold text-red-600">Invalid credentials</p>
-              <p className="text-xs text-red-500">Email or password is incorrect. Try again.</p>
-            </div>
-          </div>
-          */}
- 
-        </div>
-      </section>
- 
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
       <Footer />
     </div>
   );

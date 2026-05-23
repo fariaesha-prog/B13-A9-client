@@ -1,21 +1,13 @@
 "use client";
-
 import { createContext, useContext, useState, useEffect } from "react";
 
-<<<<<<< HEAD
-
-
 export const AuthContext = createContext();
-=======
-const AuthContext = createContext();
 
->>>>>>> 6930dac4c9707fc40fa0bcac21a086629bb745b6
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Check if user is already logged in from localStorage on mount only
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -26,7 +18,6 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("user");
       }
     }
-    // Mark as initialized after attempting to restore
     setLoading(false);
     setIsInitialized(true);
   }, []);
