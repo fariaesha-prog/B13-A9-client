@@ -63,6 +63,13 @@ export default function TutorDetailsPage() {
 
   async function handleBook(e) {
     e.preventDefault();
+    
+    if (!user) {
+      toast.error("Please login first");
+      router.push("/login");
+      return;
+    }
+    
     if (tutor.totalSlot === 0) { toast.error("No available slots left."); return; }
 
     setBooking(true);
