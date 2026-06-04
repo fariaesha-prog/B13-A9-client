@@ -39,9 +39,7 @@ export default function LoginPage() {
 
       if (!token) throw new Error("Token missing from backend response");
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      login(response.data.user);
+      login(response.data.user, token);
       setSuccess("Login successful! Redirecting...");
       setFormData({ email: "", password: "" });
 
