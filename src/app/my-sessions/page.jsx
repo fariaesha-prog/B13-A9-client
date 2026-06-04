@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
-import axios from "axios";
+import api from "@/services/api";
 import toast from "react-hot-toast";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -11,26 +11,26 @@ import { AuthContext } from "@/context/AuthContext";
 
 const statusStyles = {
   "Pending confirmation": "bg-[#FAEEDA] text-[#633806]",
-  "confirmed": "bg-[#E1F5EE] text-[#085041]",
-  "cancelled": "bg-[#FCEBEB] text-[#791F1F]",
+  "confirmed":            "bg-[#E1F5EE] text-[#085041]",
+  "cancelled":            "bg-[#FCEBEB] text-[#791F1F]",
 };
 
 const subjectColors = {
   Mathematics: "bg-[#EEEDFE] text-[#3C3489]",
-  Physics: "bg-[#FAECE7] text-[#993C1D]",
-  Chemistry: "bg-[#FAEEDA] text-[#854F0B]",
-  Biology: "bg-[#FBEAF0] text-[#72243E]",
-  English: "bg-[#E1F5EE] text-[#0F6E56]",
-  "ICT / CS": "bg-[#E6F1FB] text-[#0C447C]",
-  Accounting: "bg-[#EAF3DE] text-[#3B6D11]",
+  Physics:     "bg-[#FAECE7] text-[#993C1D]",
+  Chemistry:   "bg-[#FAEEDA] text-[#854F0B]",
+  Biology:     "bg-[#FBEAF0] text-[#72243E]",
+  English:     "bg-[#E1F5EE] text-[#0F6E56]",
+  "ICT / CS":  "bg-[#E6F1FB] text-[#0C447C]",
+  Accounting:  "bg-[#EAF3DE] text-[#3B6D11]",
 };
 
 export default function MySessionsPage() {
   const { user } = useContext(AuthContext);
-  const [sessions, setSessions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [sessions, setSessions]     = useState([]);
+  const [loading, setLoading]       = useState(true);
   const [cancelling, setCancelling] = useState(null);
-  const [confirmId, setConfirmId] = useState(null);
+  const [confirmId, setConfirmId]   = useState(null);
 
   useEffect(() => {
     if (!user) return;
@@ -39,10 +39,7 @@ export default function MySessionsPage() {
 
   async function fetchSessions() {
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings/my-bookings`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      const res = await api.get("/bookings/my-bookings");
       setSessions(res.data);
     } catch {
       toast.error("Failed to load sessions");
@@ -54,11 +51,7 @@ export default function MySessionsPage() {
   async function handleCancel(id) {
     setCancelling(id);
     try {
-      await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings/${id}/cancel`,
-        {},
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      await api.patch(`/bookings/${id}/cancel`);
       toast.success("Session cancelled");
       setSessions((prev) =>
         prev.map((s) => s._id === id ? { ...s, bookStatus: "cancelled" } : s)
@@ -71,9 +64,9 @@ export default function MySessionsPage() {
     }
   }
 
-  const total = sessions.length;
+  const total     = sessions.length;
   const confirmed = sessions.filter((s) => s.bookStatus === "confirmed").length;
-  const pending = sessions.filter((s) => s.bookStatus === "Pending confirmation").length;
+  const pending   = sessions.filter((s) => s.bookStatus === "Pending confirmation").length;
   const cancelled = sessions.filter((s) => s.bookStatus === "cancelled").length;
 
   return (
@@ -89,6 +82,7 @@ export default function MySessionsPage() {
 
         <section className="flex-1 px-4 py-8">
           <div className="max-w-6xl mx-auto">
+
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h1 className="text-xl font-medium text-gray-800 mb-1">My booked sessions</h1>
@@ -99,6 +93,7 @@ export default function MySessionsPage() {
               </span>
             </div>
 
+            {/* Stat cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
               <div className="bg-gray-100 rounded-xl p-4">
                 <p className="text-xs text-gray-400 mb-1">Total booked</p>
@@ -118,6 +113,7 @@ export default function MySessionsPage() {
               </div>
             </div>
 
+            {/* Loading */}
             {loading && (
               <div className="space-y-3">
                 {Array.from({ length: 3 }).map((_, i) => (
@@ -126,6 +122,7 @@ export default function MySessionsPage() {
               </div>
             )}
 
+            {/* Empty state */}
             {!loading && sessions.length === 0 && (
               <div className="bg-white border border-dashed border-gray-200 rounded-xl p-16 text-center">
                 <p className="text-sm font-medium text-gray-700 mb-1">No sessions booked yet</p>
@@ -136,6 +133,7 @@ export default function MySessionsPage() {
               </div>
             )}
 
+            {/* Table */}
             {!loading && sessions.length > 0 && (
               <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
                 <div className="overflow-x-auto">
@@ -149,9 +147,9 @@ export default function MySessionsPage() {
                     </thead>
                     <tbody className="divide-y divide-gray-50">
                       {sessions.map((s) => {
-                        const isCancelled = s.bookStatus === "cancelled";
+                        const isCancelled  = s.bookStatus === "cancelled";
                         const subjectClass = subjectColors[s.subject] || "bg-gray-100 text-gray-600";
-                        const statusClass = statusStyles[s.bookStatus] || "bg-gray-100 text-gray-600";
+                        const statusClass  = statusStyles[s.bookStatus] || "bg-gray-100 text-gray-600";
                         return (
                           <tr key={s._id} className={`hover:bg-gray-50 transition-colors ${isCancelled ? "opacity-50" : ""}`}>
                             <td className="px-4 py-3">
@@ -163,20 +161,30 @@ export default function MySessionsPage() {
                               </div>
                             </td>
                             <td className="px-4 py-3">
-                              <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${subjectClass}`}>{s.subject || "–"}</span>
+                              <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${subjectClass}`}>
+                                {s.subject || "–"}
+                              </span>
                             </td>
                             <td className="px-4 py-3 text-xs text-gray-400 max-w-[160px] truncate">{s.studentEmail}</td>
                             <td className="px-4 py-3 font-mono text-xs text-[#0F6E56]">
-                              {isCancelled ? <span className="line-through text-gray-400">{s.sessionToken}</span> : s.sessionToken}
+                              {isCancelled
+                                ? <span className="line-through text-gray-400">{s.sessionToken}</span>
+                                : s.sessionToken}
                             </td>
                             <td className="px-4 py-3">
-                              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusClass}`}>{s.bookStatus}</span>
+                              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusClass}`}>
+                                {s.bookStatus}
+                              </span>
                             </td>
                             <td className="px-4 py-3">
                               <button
                                 disabled={isCancelled}
                                 onClick={() => setConfirmId(s._id)}
-                                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${isCancelled ? "border-gray-100 text-gray-300 cursor-not-allowed" : "border-red-200 bg-red-50 text-red-500 hover:bg-red-100"}`}
+                                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                                  isCancelled
+                                    ? "border-gray-100 text-gray-300 cursor-not-allowed"
+                                    : "border-red-200 bg-red-50 text-red-500 hover:bg-red-100"
+                                }`}
                               >
                                 Cancel
                               </button>
@@ -191,10 +199,10 @@ export default function MySessionsPage() {
             )}
           </div>
         </section>
-
         <Footer />
       </div>
 
+      {/* Cancel modal */}
       {confirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#04342C]/60 backdrop-blur-sm" onClick={() => setConfirmId(null)} />
